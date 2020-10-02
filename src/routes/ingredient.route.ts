@@ -8,4 +8,4 @@ ingredientRouter.post('/', permission('admin'), IngredientController.create);
 ingredientRouter.put('/:id', permission('admin'), IngredientController.update);
 ingredientRouter.delete('/:id', permission('admin'), IngredientController.delete);
 
-module.exports = ingredientRouter;
+export default ingredientRouter;

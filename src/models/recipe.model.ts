@@ -1,10 +1,27 @@
-const mongoose = require('mongoose');
+import { Document, Model, model, Types, Schema, Query } from "mongoose"
+import { IIngredient } from './ingredient.model';
+import { IUser } from './user.model';
 
-const RecipeSchema = new mongoose.Schema( {
+export interface IRecipe extends Document {
+    id: Schema.Types.ObjectId;
+    name: string;
+    ingredients: IIngredient['id'];
+    preparation: string;
+    uploader: IUser['id'];
+    type: string;
+    lackings: string[];
+    temperature: string;
+    month: string[];
+    preserved: boolean;
+    rating: number;
+    active: boolean;
+    inspected: boolean;
+    valid: boolean;
 
-    
+}
+const RecipeSchema = new Schema({
     id: {
-        type: mongoose.Schema.Types.ObjectId
+        type: Schema.Types.ObjectId
     },
     name: {
         type: String,
@@ -12,7 +29,7 @@ const RecipeSchema = new mongoose.Schema( {
     },
     ingredients: [{
         ingredient: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'Ingredient',
             required: true
         }
@@ -22,7 +39,7 @@ const RecipeSchema = new mongoose.Schema( {
         required: true
     },
     uploader: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
@@ -65,7 +82,8 @@ const RecipeSchema = new mongoose.Schema( {
         default: false
     }
 },
-{
-    timestamps: true
-});
-module.exports = mongoose.model('Recipe', RecipeSchema);
+    {
+        timestamps: true
+    });
+
+export default model<IRecipe>("Recipe", RecipeSchema);

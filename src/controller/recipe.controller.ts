@@ -1,9 +1,8 @@
-const Recipe = require("../models/recipe.model");
-const mongoose = require("mongoose");
-mongoose.Promise = require("bluebird");
+import { Request, Response } from 'express';
+import Recipe from "../models/recipe.model";
 
-module.exports = {
-  list: (req, res) => {
+const RecipeController = {
+  list: (req: Request, res: Response) => {
     Recipe.find({})
       .populate("uploader", "username")
       .populate("ingredient.ingredient", "name unit")
@@ -11,7 +10,7 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  find: (req, res) => {
+  find: (req: Request, res: Response) => {
     Recipe.findById(req.params.id)
       .populate("uploader", "username")
       .populate("ingredient.ingredient", "name unit")
@@ -19,13 +18,13 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  create: (req, res) => {
+  create: (req: Request, res: Response) => {
     Recipe.create(req.body)
       .then((recipe) => res.json(recipe))
       .catch((err) => res.send(err));
   },
 
-  update: (req, res) => {
+  update: (req: Request, res: Response) => {
     Recipe.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .populate("uploader", "username")
       .populate("ingredient.ingredient", "name unit")
@@ -33,9 +32,10 @@ module.exports = {
       .catch((err) => res.send(err));
   },
 
-  delete: (req, res) => {
+  delete: (req: Request, res: Response) => {
     Recipe.findByIdAndRemove(req.params.id)
       .then((recipe) => res.json(recipe))
       .catch((err) => res.send(err));
   },
 };
+export default RecipeController;

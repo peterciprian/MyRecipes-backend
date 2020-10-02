@@ -1,7 +1,16 @@
-const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
+import mongoose, { Schema, Document } from 'mongoose';
+import { IRecipe } from './recipe.model';
+import passportLocalMongoose from 'passport-local-mongoose';
 
-const userSchema = mongoose.Schema({
+export interface IUser extends Document {
+  commentId: string;
+  username: string;
+  email: string;
+  role: string;
+  phonenumber: number;
+  recipes: IRecipe['id'];
+}
+const userSchema: Schema = new Schema({
   commentId: {
     type: mongoose.Schema.Types.ObjectId,
   },
@@ -38,4 +47,4 @@ userSchema.plugin(passportLocalMongoose, {
   usernameField: 'email',
 });
 
-module.exports = mongoose.model('User', userSchema);
+export default mongoose.model<IUser>('User', userSchema);

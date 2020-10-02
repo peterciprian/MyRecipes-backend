@@ -1,22 +1,23 @@
-const User = require("../models/user.model");
+import { Request, Response } from 'express';
+import User from "../models/user.model";
 
-module.exports = {
-  profile: (req, res) => {
+const UserController = {
+  profile: (req: Request, res: Response) => {
     res.json({
       user: req.user,
     });
   },
 
-  list: (req, res) => {
-    User.find({}, (err, roles) => {
+  list: (req: Request, res: Response) => {
+    User.find({}, (err: Error, uesers: any[]) => {
       if (err) {
         res.json(err);
       }
-      res.json(roles);
+      res.json(uesers);
     });
   },
 
-  register: (req, res) => {
+  register: (req: Request, res: Response) => {
     User.register(
       new User({
         username: req.body.username,
@@ -31,29 +32,29 @@ module.exports = {
           success: "Sikeres regisztráció",
         })
       )
-      .catch((err) => res.send(err));
+      .catch((err: Error) => res.send(err));
   },
 
-  login: (req, res) =>
+  login: (req: Request, res: Response) =>
     res.json({
       success: "Sikeres belépés",
     }),
 
-  logout: (req, res) => {
+  logout: (req: Request, res: Response) => {
     req.logout();
     res.json({
       success: "Sikeres kilépés",
     });
   },
 
-  updateProfile: (req, res) => {
+  updateProfile: (req: Request, res: Response) => {
     User.findByIdAndUpdate(
       req.params.id,
       req.body,
       { new: true },
-      (err, user) => {
+      (err: Error, user: User) => {
         if (err) {
-          res.send(err);
+          res.send(err)
           console.log(err);
         } else {
           res.json(user);
@@ -62,8 +63,8 @@ module.exports = {
     );
   },
 
-  delete: (req, res) => {
-    User.findByIdAndRemove(req.params.id, (err, data) => {
+  delete: (req: Request, res: Response) => {
+    User.findByIdAndRemove(req.params.id, (err: Error, data: any) => {
       if (err) {
         res.send(err);
         console.log(err);
@@ -73,14 +74,14 @@ module.exports = {
     });
   },
 
-  changePass: (req, res) => {
+  changePass: (req: Request, res: Response) => {
     if (req.user) {
-      if (req.user["_id"] == req.params.id) {
-        User.findById(req.params.id).then((user) => {
+      if (req.user.id == req.params.id) {
+        User.findById(req.params.id).then((user: User) => {
           user.changePassword(
             req.body.oldPassword,
             req.body.newPassword,
-            (passwordErr) => {
+            (passwordErr: Error) => {
               if (passwordErr) {
                 res.status(401).json({ err: "Rossz jelszó" });
               } else {
@@ -100,3 +101,5 @@ module.exports = {
     }
   },
 };
+
+export default UserController;

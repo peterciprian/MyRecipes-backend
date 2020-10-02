@@ -12,5 +12,4 @@ userRouter.delete('/:id', UserController.delete);
 userRouter.put('/update/:id', UserController.updateProfile);
 userRouter.get('/users', permission('admin'), UserController.list);
 userRouter.post('/change/:id', UserController.changePass);
-
-module.exports = userRouter;
+export default userRouter;

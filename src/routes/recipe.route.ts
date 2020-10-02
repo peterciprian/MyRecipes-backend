@@ -8,4 +8,4 @@ recipeRouter.post('/', permission(), RecipeController.create);
 recipeRouter.put('/update/:id', permission(), RecipeController.update);
 recipeRouter.delete('/delete/:id', permission(), RecipeController.delete);
 
-module.exports = recipeRouter;
+export default recipeRouter;
